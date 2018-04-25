@@ -39,7 +39,7 @@ def run_test_draw_L():
     green_circle.fill_color = 'green'
 
     draw_L(window, green_circle, 10, 5)
-    window.continue_on_mouse_click('Click to run Test 2.')
+    window.continue_on_mouse_click('Click twice to run Test 2.')
 
     # ------------------------------------------------------------------
     # Second L.
@@ -80,24 +80,41 @@ def draw_L(window, circle, r, c):
     and m and n are small, positive integers.
     """
     # ------------------------------------------------------------------
-    # TODO: 2. Implement and test this function.
+    # DONE: 2. Implement and test this function.
     #     The testing code is already written for you (above).
     # ------------------------------------------------------------------
 
-    origin = rg.Circle(rg.Point(circle.center.x, circle.center.y), circle.radius)
-    origin.fill_color = circle.fill_color
-    circle.attach_to(window)
-    window.render(0.1)
-    circ = circle
-    for i in range(r):
-        for j in range(2):
-            circ.center.x = circ.center.x + 2 * circle.radius
-            circ.attach_to(window)
-            window.render(0.1)
-        circ.center.x = circ.center.x - 4 * circle.radius
-        circ.center.y = circ.center.y + circle.radius
-        circ.attach_to(window)
+    origin_color = circle.fill_color
+    new_x = circle.center.x
+    new_y = circle.center.y
+    for i in range(r + 3):
+        circle = rg.Circle(rg.Point(new_x, new_y), circle.radius)
+        circle.fill_color = origin_color
+        circle.attach_to(window)
         window.render(0.1)
+        for j in range(2):
+            new_x = new_x + 2 * circle.radius
+            circle = rg.Circle(rg.Point(new_x, new_y), circle.radius)
+            circle.fill_color = origin_color
+            circle.attach_to(window)
+            window.render(0.1)
+        new_x = new_x - 4 * circle.radius
+        new_y = new_y + 2 * circle.radius
+    new_x = new_x + 6 * circle.radius
+    new_y = new_y - 2 * circle.radius
+    for i in range(c):
+        circle = rg.Circle(rg.Point(new_x, new_y), circle.radius)
+        circle.fill_color = origin_color
+        circle.attach_to(window)
+        window.render(0.1)
+        for j in range(2):
+            new_y = new_y - 2 * circle.radius
+            circle = rg.Circle(rg.Point(new_x, new_y), circle.radius)
+            circle.fill_color = origin_color
+            circle.attach_to(window)
+            window.render(0.1)
+        new_x = new_x + 2 * circle.radius
+        new_y = new_y + 4 * circle.radius
 
 
 def run_test_draw_wall_on_right():
@@ -136,9 +153,30 @@ def draw_wall_on_right(rectangle, n, window):
     and n is a small, positive integer.
     """
     # ------------------------------------------------------------------
-    # TODO: 3. Implement and test this function.
+    # DONE: 3. Implement and test this function.
     #     The testing code is already written for you (above).
     # ------------------------------------------------------------------
+
+    corner1 = rectangle.corner_1
+    corner2 = rectangle.corner_2
+    baseline_c1 = rectangle.corner_1.x
+    baseline_c2 = rectangle.corner_2.x
+    width = rectangle.get_width()
+    height = rectangle.get_height()
+    for i in range(n):
+        rectangle = rg.Rectangle(corner1, corner2)
+        rectangle.attach_to(window)
+        window.render(0.1)
+        for j in range(i):
+            corner1.x = corner1.x - width
+            corner2.x = corner2.x - width
+            rectangle = rg.Rectangle(corner1, corner2)
+            rectangle.attach_to(window)
+            window.render(0.1)
+        corner1.x = baseline_c1
+        corner2.x = baseline_c2
+        corner1.y = corner1.y + height
+        corner2.y = corner2.y + height
 
 
 # ----------------------------------------------------------------------
